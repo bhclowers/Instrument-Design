@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE eagle SYSTEM "eagle.dtd">
-<eagle version="9.1.3">
+<eagle version="9.3.0">
 <drawing>
 <settings>
 <setting alwaysvectorfont="no"/>
@@ -9,7 +9,7 @@
 </settings>
 <grid distance="5" unitdist="mil" unit="mil" style="dots" multiple="1" display="yes" altdistance="0.025" altunitdist="inch" altunit="inch"/>
 <layers>
-<layer number="1" name="Top" color="4" fill="1" visible="yes" active="yes"/>
+<layer number="1" name="Top" color="4" fill="1" visible="no" active="yes"/>
 <layer number="2" name="Route2" color="16" fill="1" visible="yes" active="yes"/>
 <layer number="3" name="Route3" color="17" fill="1" visible="yes" active="yes"/>
 <layer number="4" name="Route4" color="18" fill="1" visible="yes" active="yes"/>
@@ -24,7 +24,7 @@
 <layer number="13" name="Route13" color="21" fill="1" visible="yes" active="yes"/>
 <layer number="14" name="Route14" color="22" fill="1" visible="yes" active="yes"/>
 <layer number="15" name="Route15" color="23" fill="1" visible="yes" active="yes"/>
-<layer number="16" name="Bottom" color="1" fill="1" visible="yes" active="yes"/>
+<layer number="16" name="Bottom" color="1" fill="1" visible="no" active="yes"/>
 <layer number="17" name="Pads" color="2" fill="1" visible="yes" active="yes"/>
 <layer number="18" name="Vias" color="2" fill="1" visible="yes" active="yes"/>
 <layer number="19" name="Unrouted" color="6" fill="1" visible="yes" active="yes"/>
@@ -37,8 +37,8 @@
 <layer number="26" name="bNames" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="27" name="tValues" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="28" name="bValues" color="7" fill="1" visible="yes" active="yes"/>
-<layer number="29" name="tStop" color="7" fill="3" visible="no" active="yes"/>
-<layer number="30" name="bStop" color="7" fill="6" visible="no" active="yes"/>
+<layer number="29" name="tStop" color="7" fill="3" visible="yes" active="yes"/>
+<layer number="30" name="bStop" color="7" fill="6" visible="yes" active="yes"/>
 <layer number="31" name="tCream" color="7" fill="4" visible="no" active="yes"/>
 <layer number="32" name="bCream" color="7" fill="5" visible="no" active="yes"/>
 <layer number="33" name="tFinish" color="6" fill="3" visible="no" active="yes"/>
@@ -75,7 +75,7 @@
 <board>
 <plain>
 <wire x1="-15.875" y1="-20.32" x2="-20.32" y2="-15.875" width="0.1778" layer="20"/>
-<wire x1="-20.32" y1="15.875" x2="-20.32" y2="7.62" width="0.1778" layer="20"/>
+<wire x1="-20.32" y1="15.875" x2="-20.32" y2="-3.81" width="0.1778" layer="20"/>
 <wire x1="-20.32" y1="15.875" x2="-15.875" y2="20.32" width="0.1778" layer="20"/>
 <wire x1="-15.875" y1="20.32" x2="-15.875" y2="24.13" width="0.1778" layer="20"/>
 <wire x1="-15.875" y1="24.13" x2="-12.065" y2="24.13" width="0.1778" layer="20"/>
@@ -107,27 +107,13 @@
 <wire x1="32.131" y1="31.6738" x2="32.4358" y2="31.9024" width="0.1778" layer="46"/>
 <wire x1="25.4" y1="31.6992" x2="25.0952" y2="31.9278" width="0.1778" layer="46"/>
 <wire x1="21.6662" y1="28.0924" x2="21.4376" y2="28.3972" width="0.1778" layer="46"/>
-<rectangle x1="51.8541" y1="22.7711" x2="56.8833" y2="26.5557" layer="30" rot="R270"/>
-<rectangle x1="51.8541" y1="22.7711" x2="56.8833" y2="26.5557" layer="29" rot="R270"/>
 <text x="-0.66675" y="10.61085" size="1.778" layer="21" font="vector">+</text>
 <text x="-0.66675" y="-12.35075" size="1.778" layer="21" font="vector">+</text>
 <text x="11.04265" y="-0.26035" size="1.778" layer="21" font="vector">-</text>
 <text x="-11.74115" y="-0.15875" size="1.778" layer="21" font="vector">-</text>
 <text x="9.13765" y="-15.29715" size="1.016" layer="21" font="vector" rot="SR180">DC  Offset (+)</text>
 <text x="15.56385" y="9.84885" size="1.016" layer="21" font="vector" rot="SR270">DC  Offset (-)</text>
-<rectangle x1="19.558" y1="9.525" x2="24.638" y2="13.335" layer="29" rot="R270"/>
-<rectangle x1="-13.97" y1="20.32" x2="-8.89" y2="24.13" layer="29"/>
-<rectangle x1="-13.97" y1="20.32" x2="-8.89" y2="24.13" layer="30"/>
-<rectangle x1="8.89" y1="-24.13" x2="13.97" y2="-20.32" layer="30"/>
-<rectangle x1="8.89" y1="-24.13" x2="13.97" y2="-20.32" layer="29"/>
-<rectangle x1="-24.892" y1="-13.462" x2="-19.812" y2="-9.652" layer="29" rot="R270"/>
-<rectangle x1="19.558" y1="9.525" x2="24.638" y2="13.335" layer="30" rot="R90"/>
-<rectangle x1="-24.892" y1="-13.208" x2="-19.812" y2="-9.398" layer="30" rot="R90"/>
-<dimension x1="-14.605" y1="14.605" x2="14.605" y2="14.605" x3="0" y3="27.178" textsize="1.778" layer="20" dtype="horizontal" unit="inch" precision="3"/>
-<dimension x1="-14.605" y1="14.605" x2="-14.605" y2="-14.605" x3="28.194" y3="0" textsize="1.778" layer="20" dtype="vertical" unit="inch" precision="3"/>
-<dimension x1="14.605" y1="-14.605" x2="-14.605" y2="-14.605" x3="0" y3="-28.321" textsize="1.778" layer="20" dtype="horizontal" unit="inch" precision="3"/>
-<dimension x1="20.32" y1="-20.32" x2="-20.32" y2="-20.32" x3="0" y3="-33.274" textsize="1.778" layer="20" dtype="horizontal" unit="inch" precision="3"/>
-<dimension x1="-20.32" y1="20.32" x2="-20.32" y2="-20.32" x3="-27.178" y3="0" textsize="1.778" layer="20" dtype="vertical" unit="inch" precision="3"/>
+<rectangle x1="-16.002" y1="20.32" x2="-11.938" y2="24.13" layer="29"/>
 <text x="17.62125" y="9.97585" size="1.778" layer="21" font="vector" rot="SR270">RF -</text>
 <text x="-11.36015" y="17.64665" size="1.778" layer="21" font="vector">RF +</text>
 <text x="9.08685" y="-17.15135" size="1.778" layer="21" font="vector" rot="SR180">RF +</text>
@@ -136,15 +122,12 @@
 <wire x1="3.81" y1="-24.13" x2="7.62" y2="-24.13" width="0.1778" layer="20"/>
 <wire x1="7.62" y1="-24.13" x2="7.62" y2="-20.32" width="0.1778" layer="20"/>
 <wire x1="7.62" y1="-20.32" x2="15.875" y2="-20.32" width="0.1778" layer="20"/>
-<wire x1="-20.32" y1="7.62" x2="-20.32" y2="3.81" width="0.1778" layer="20"/>
-<wire x1="-20.32" y1="3.81" x2="-20.32" y2="-3.81" width="0.1778" layer="20"/>
 <wire x1="-20.32" y1="-3.81" x2="-24.13" y2="-3.81" width="0.1778" layer="20"/>
 <wire x1="-24.13" y1="-3.81" x2="-24.13" y2="-7.62" width="0.1778" layer="20"/>
 <wire x1="-24.13" y1="-7.62" x2="-20.32" y2="-7.62" width="0.1778" layer="20"/>
 <wire x1="-20.32" y1="-7.62" x2="-20.32" y2="-15.875" width="0.1778" layer="20"/>
 <wire x1="-12.065" y1="20.32" x2="15.875" y2="20.32" width="0.1778" layer="20"/>
-<wire x1="20.32" y1="-15.875" x2="20.32" y2="-12.065" width="0.1778" layer="20"/>
-<wire x1="20.32" y1="-12.065" x2="20.32" y2="12.065" width="0.1778" layer="20"/>
+<wire x1="20.32" y1="-15.875" x2="20.32" y2="12.065" width="0.1778" layer="20"/>
 <rectangle x1="20.447" y1="12.192" x2="24.003" y2="15.748" layer="1" rot="R90"/>
 <rectangle x1="20.447" y1="12.192" x2="24.003" y2="15.748" layer="16" rot="R90"/>
 <rectangle x1="3.937" y1="-24.003" x2="7.493" y2="-20.447" layer="1" rot="R180"/>
@@ -155,6 +138,13 @@
 <text x="-17.49425" y="-8.83285" size="1.778" layer="21" font="vector" rot="SR90">RF -</text>
 <text x="-8.88365" y="15.93215" size="1.016" layer="21" font="vector" rot="SR0">DC  Offset (+)</text>
 <text x="-15.18285" y="-8.83285" size="1.016" layer="21" font="vector" rot="SR90">DC  Offset (-)</text>
+<rectangle x1="20.066" y1="12.065" x2="24.13" y2="15.875" layer="29"/>
+<rectangle x1="-24.257" y1="-7.493" x2="-20.193" y2="-3.683" layer="29"/>
+<rectangle x1="3.683" y1="-24.003" x2="7.747" y2="-20.193" layer="29"/>
+<rectangle x1="3.683" y1="-24.003" x2="7.747" y2="-20.193" layer="30"/>
+<rectangle x1="-24.257" y1="-7.493" x2="-20.193" y2="-3.683" layer="30"/>
+<rectangle x1="20.066" y1="12.065" x2="24.13" y2="15.875" layer="30"/>
+<rectangle x1="-16.002" y1="20.32" x2="-11.938" y2="24.13" layer="30"/>
 </plain>
 <libraries>
 <library name="pcb_quad_v3">
