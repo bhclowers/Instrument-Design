@@ -19,6 +19,7 @@ supports Copy and Paste along with grouping.
 import pcbnew
 from pcbnew import VECTOR2I, EDA_ANGLE
 import re
+import math
 import datetime
 import wx
 import os
@@ -558,3 +559,185 @@ class ChangeDepthDialog(wx.Dialog):
     def OnClose(self, e):
 
         self.Destroy()
+
+
+def get_selected_footprints_sorted(board):
+    """
+    Return selected footprints sorted by natural sort of reference designator.
+    Examples:
+        R1, R2, R10, R88, R100
+    """
+    def natural_key(s):
+        return [int(text) if text.isdigit() else text.lower()
+                for text in re.split(r'([0-9]+)', str(s))]
+
+    selected = [fp for fp in board.GetFootprints() if fp.IsSelected()]
+    selected.sort(key=lambda fp: natural_key(fp.GetReference()))
+    return selected
+
+
+def step_to_iu(step_value, units):
+    units = units.lower().strip()
+
+    if units == "mm":
+        return int(pcbnew.pcbIUScale.mmToIU(step_value))
+    elif units == "mils":
+        return int(pcbnew.pcbIUScale.MilsToIU(step_value))
+    else:
+        raise ValueError("Units must be 'mm' or 'mils'")
+
+
+def distribute_selected_in_grid(
+        winFrame,
+        x_step,
+        y_step,
+        cols,
+        rows,
+        units):
+
+    board = pcbnew.GetBoard()
+    selected = get_selected_footprints_sorted(board)
+
+    if not selected:
+        reportDialog(winFrame, "No selected footprints were found.", "Grid Layout")
+        return
+
+    n = len(selected)
+
+    if cols == 0 and rows == 0:
+        reportDialog(
+            winFrame,
+            "Columns and rows cannot both be zero.",
+            "Grid Layout Input Error"
+        )
+        return
+
+    if cols == 0:
+        cols = int(math.ceil(n / rows))
+    elif rows == 0:
+        rows = int(math.ceil(n / cols))
+
+    x_step_iu = step_to_iu(x_step, units)
+    y_step_iu = step_to_iu(y_step, units)
+
+    x0 = min(fp.GetPosition().x for fp in selected)
+    y0 = min(fp.GetPosition().y for fp in selected)
+
+    for idx, fp in enumerate(selected):
+
+        row = idx // cols
+        col = idx % cols
+
+        new_x = x0 + col * x_step_iu
+        new_y = y0 + row * y_step_iu
+
+        fp.SetPosition(pcbnew.VECTOR2I(int(new_x), int(new_y)))
+
+    pcbnew.Refresh()
+
+    reportDialog(
+        winFrame,
+        f"Distributed {n} components in a grid.",
+        "Grid Layout Complete"
+    )
+
+
+class GridLayoutDialog(wx.Dialog):
+
+    def __init__(self, parent):
+
+        super().__init__(parent, title="Grid Layout")
+
+        lbl_cols = wx.StaticText(self, label="Columns (0 allowed):")
+        lbl_rows = wx.StaticText(self, label="Rows (0 allowed):")
+
+        lbl_x = wx.StaticText(self, label="X Step:")
+        lbl_y = wx.StaticText(self, label="Y Step:")
+
+        lbl_units = wx.StaticText(self, label="Units:")
+
+        self.cols = wx.SpinCtrl(self, min=0, max=10000, initial=1)
+        self.rows = wx.SpinCtrl(self, min=0, max=10000, initial=0)
+
+        self.xstep = wx.TextCtrl(self, value="0")
+        self.ystep = wx.TextCtrl(self, value="2.4")
+
+        self.units = wx.Choice(self, choices=["mm", "mils"])
+        self.units.SetSelection(0)
+
+        grid = wx.FlexGridSizer(0, 2, 8, 8)
+
+        grid.Add(lbl_cols)
+        grid.Add(self.cols, 1, wx.EXPAND)
+
+        grid.Add(lbl_rows)
+        grid.Add(self.rows, 1, wx.EXPAND)
+
+        grid.Add(lbl_x)
+        grid.Add(self.xstep, 1, wx.EXPAND)
+
+        grid.Add(lbl_y)
+        grid.Add(self.ystep, 1, wx.EXPAND)
+
+        grid.Add(lbl_units)
+        grid.Add(self.units, 1, wx.EXPAND)
+
+        btns = self.CreateSeparatedButtonSizer(wx.OK | wx.CANCEL)
+
+        sizer = wx.BoxSizer(wx.VERTICAL)
+        sizer.Add(grid, 0, wx.ALL | wx.EXPAND, 12)
+        sizer.Add(btns, 0, wx.ALL | wx.EXPAND, 12)
+
+        self.SetSizerAndFit(sizer)
+
+    def get_values(self):
+
+        cols = int(self.cols.GetValue())
+        rows = int(self.rows.GetValue())
+
+        x_step = float(self.xstep.GetValue())
+        y_step = float(self.ystep.GetValue())
+
+        units = self.units.GetStringSelection()
+
+        return cols, rows, x_step, y_step, units
+
+
+class GridLayout(pcbnew.ActionPlugin):
+
+    def defaults(self):
+
+        self.name = "Grid Layout"
+        self.category = "Modify PCB"
+        self.description = "Distribute selected components in a sorted grid"
+
+    def Run(self):
+
+        win_candidates = [
+            x for x in wx.GetTopLevelWindows()
+            if 'pcb editor' in x.GetTitle().lower()
+        ]
+
+        if not win_candidates:
+            return
+
+        winFrame = win_candidates[0]
+
+        dlg = GridLayoutDialog(winFrame)
+
+        if dlg.ShowModal() != wx.ID_OK:
+            dlg.Destroy()
+            return
+
+        cols, rows, x_step, y_step, units = dlg.get_values()
+
+        dlg.Destroy()
+
+        distribute_selected_in_grid(
+            winFrame,
+            x_step,
+            y_step,
+            cols,
+            rows,
+            units
+        )

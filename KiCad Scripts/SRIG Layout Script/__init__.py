@@ -5,6 +5,7 @@ try:
     # Instantiate and register to Pcbnew
     # text_by_date().register()  
     distributeVias().register()  
+    GridLayout().register()
 except Exception as e:
     import os
     plugin_dir = os.path.dirname(os.path.realpath(__file__))
